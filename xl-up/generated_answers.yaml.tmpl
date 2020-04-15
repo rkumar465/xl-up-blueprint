@@ -36,6 +36,8 @@ UseInternalLoadBalancer: {{ .UseInternalLoadBalancer }}
 {{- end }}
 Namespace: {{.Namespace}}
 UseCustomNamespace: {{.UseCustomNamespace}}
+ServiceAccount: {{ .ServiceAccount }}
+UseCustomServiceAccount: {{ .UseCustomServiceAccount }}
 UseCustomRegistry: {{.UseCustomRegistry}}
 InstallXLD: {{ .InstallXLD }}
 InstallXLR: {{ .InstallXLR }}
@@ -91,7 +93,7 @@ XldDbPass: {{ .XldDbPass }}
 EfsId: {{ .EfsId }}
 EfsRegion: {{ .EfsRegion }}
 {{- end}}
-{{- if and (or (eq .K8sSetup "GoogleGKE" ) (eq .K8sSetup "PlainK8SCluster")) (not .UseExistingStorageClasses)}}
+{{- if and (or (eq .K8sSetup "GoogleGKE" ) (eq .K8sSetup "PlainK8SCluster") (eq .K8sSetup "Openshift")) (not .UseExistingStorageClasses)}}
 NfsServerHost: {{ .NfsServerHost }}
 NfsSharePath: {{ .NfsSharePath }}
 {{- end}}
