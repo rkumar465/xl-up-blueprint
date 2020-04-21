@@ -21,11 +21,7 @@ spec:
         app: nfs-client-provisioner
         organization: xebialabs
     spec:
-      {{- if eq .K8sSetup "Openshift" }}
-      serviceAccountName: {{ .ServiceAccount }}
-      {{- else }}
       serviceAccountName: xebialabs-nfs-client-provisioner
-      {{- end }}
       containers:
         - name: nfs-client-provisioner
           {{if .UseCustomRegistryForAllImages }}

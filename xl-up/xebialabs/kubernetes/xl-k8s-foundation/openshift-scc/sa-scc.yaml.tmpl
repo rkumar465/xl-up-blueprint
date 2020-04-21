@@ -44,7 +44,8 @@ seccompProfiles:
 supplementalGroups:
   type: RunAsAny
 users:
-- system:serviceaccount:xebialabs:xebialabs
+- system:serviceaccount:{{ .Namespace }}:{{ .ServiceAccount }}
+- system:serviceaccount:{{ .Namespace }}:xebialabs-nfs-client-provisioner
 volumes:
 - '*'
 ---
@@ -79,7 +80,7 @@ seLinuxContext:
 supplementalGroups:
   type: RunAsAny
 users:
-- system:serviceaccount:xebialabs:haproxy-ingress-serviceaccount
+- system:serviceaccount:{{ .Namespace }}:haproxy-ingress-serviceaccount
 volumes:
 - configMap
 - downwardAPI

@@ -174,9 +174,9 @@ spec:
       containers:
         - name: haproxy-ingress
           {{if .UseCustomRegistryForAllImages }}
-          image: {{.RegistryURL}}/haproxy-ingress:latest
+          image: {{.RegistryURL}}/haproxy-ingress:v0.6
           {{else}}
-          image: quay.io/jcmoraisjr/haproxy-ingress:latest
+          image: quay.io/jcmoraisjr/haproxy-ingress:v0.6
           {{end}}
           args:
             - --default-backend-service=$(POD_NAMESPACE)/ingress-default-backend
