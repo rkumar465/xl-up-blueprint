@@ -45,7 +45,6 @@ supplementalGroups:
   type: RunAsAny
 users:
 - system:serviceaccount:{{ .Namespace }}:{{ .ServiceAccount }}
-- system:serviceaccount:{{ .Namespace }}:xebialabs-nfs-client-provisioner
 volumes:
 - '*'
 ---
