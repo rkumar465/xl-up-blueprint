@@ -227,6 +227,9 @@ spec:
                     readinessProbeRetry: 120
                     file: !file kubernetes/xl-k8s-foundation/dockercred.yaml
                 applicationDependencies:
+                {{- if eq .K8sSetup "Openshift"}}
+                  Openshift-SCC: "1.0"
+                {{- end}}
                 {{- if not .ExternalDatabase}}
                   PostgreSQL: "10.5"
                 {{- end }}
@@ -272,6 +275,9 @@ spec:
                     readinessProbeRetry: 120
                     file: !file kubernetes/xl-k8s-foundation/xebialabs-service-internal.yaml
                 applicationDependencies:
+                {{- if eq .K8sSetup "Openshift"}}
+                  Openshift-SCC: "1.0"
+                {{- end}}
                 undeployDependencies: "true"
           {{ end }}
           {{- if and (or (eq .K8sSetup "AwsEKS") (eq .K8sSetup "GoogleGKE") (eq .K8sSetup "AzureAKS")) (not .UseExistingStorageClasses)}}
@@ -352,6 +358,9 @@ spec:
                     file: !file "kubernetes/xl-k8s-foundation/xl-pvc/pvc-xlr-reports.yaml"
                   {{- end }}
                 applicationDependencies:
+                  {{- if eq .K8sSetup "Openshift"}}
+                  Openshift-SCC: "1.0"
+                  {{- end}}
                   {{- if or (eq .K8sSetup "GoogleGKE") (eq .K8sSetup "PlainK8SCluster") (eq .K8sSetup "Openshift")}}
                   K8s-NFS-Client-Provisioner: "v3.1.0-k8s1.11"
                   {{- else if eq .K8sSetup "AwsEKS" }}
@@ -373,6 +382,9 @@ spec:
                     readinessProbeRetry: 120
                     file: !file kubernetes/xl-k8s-foundation/postgresql/xl-postgresql.yaml
                 applicationDependencies:
+                  {{- if eq .K8sSetup "Openshift"}}
+                  Openshift-SCC: "1.0"
+                  {{- end}}
                   {{- if and (ne .K8sSetup "DockerDesktopK8s") (ne .K8sSetup "MinikubeK8s")}}
                     {{- if and (ne .K8sSetup "PlainK8SCluster") (ne .K8sSetup "Openshift") (not .UseExistingStorageClasses)}}
                   K8s-StorageClass: "1.0"
@@ -420,8 +432,8 @@ spec:
                     type: k8s.ResourcesFile
                     readinessProbeRetry: 120
                     file: !file kubernetes/xl-k8s-foundation/nfs-client-provisioner/storageclass.yaml
-                {{- if eq .K8sSetup "Openshift"}}
                 applicationDependencies:
+                {{- if eq .K8sSetup "Openshift"}}
                   Openshift-SCC: "1.0"
                 {{- end}}
           {{- end }}
@@ -450,6 +462,9 @@ spec:
                     file: !file kubernetes/xl-k8s-foundation/rabbitmq/ingress.yaml
                   {{end}}
                 applicationDependencies:
+                  {{- if eq .K8sSetup "Openshift"}}
+                  Openshift-SCC: "1.0"
+                  {{- end}}
                   {{- if and (ne .K8sSetup "DockerDesktopK8s") (ne .K8sSetup "MinikubeK8s") }}
                     {{- if and (ne .K8sSetup "PlainK8SCluster") (ne .K8sSetup "Openshift") (not .UseExistingStorageClasses)}}
                   K8s-StorageClass: "1.0"

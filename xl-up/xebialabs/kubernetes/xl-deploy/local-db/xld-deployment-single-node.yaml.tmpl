@@ -95,9 +95,6 @@ spec:
         app: xl-deploy
         organization: xebialabs
     spec:
-      {{- if eq .K8sSetup "Openshift" }}
-      serviceAccountName: {{ .ServiceAccount }}
-      {{- end }}
       initContainers:
         - name: fix-the-volume-permission
           {{if .UseCustomRegistryForAllImages }}
