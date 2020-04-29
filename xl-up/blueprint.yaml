@@ -8,7 +8,7 @@ metadata:
   version: 1.0
 spec:
   parameters:
-    - name: UseCustomServiceAccount
+    - name: UseExistingOpenshiftServiceAccount
       type: Confirm
       prompt: "Do you want to use an existing Service Account?"
       promptIf: !expr "K8sSetup == 'Openshift'"
@@ -18,10 +18,10 @@ spec:
       overrideDefault: true
       description: "When using custom Service Account you have to attach An Existing Security Context Constraint."
 
-    - name: ServiceAccount
+    - name: OpenshiftServiceAccount
       type: Input
       prompt: "Enter the name of the existing Service Account where the XebiaLabs DevOps Platform will be installed, updated or undeployed:"
-      promptIf: !expr "UseCustomServiceAccount"
+      promptIf: !expr "UseExistingOpenshiftServiceAccount"
       default: xebialabs
       saveInXlvals: true
       ignoreIfSkipped: true
