@@ -15,8 +15,8 @@ spec:
       default: false
       saveInXlvals: true
       ignoreIfSkipped: true
-      overrideDefault: true
-      description: "When using custom Service Account you have to attach An Existing Security Context Constraint."
+      overrideDefault: false
+      description: "When using existing Service Account you have to attach An Existing Security Context Constraint."
 
     - name: OpenshiftServiceAccount
       type: Input
@@ -25,7 +25,7 @@ spec:
       default: xebialabs
       saveInXlvals: true
       ignoreIfSkipped: true
-      overrideDefault: true
+      overrideDefault: false
       description: "Enter the name of existing Service Account to be used while deploying DevOps Platform to Openshift Cluster."
 
     - name: UseCustomRegistry
