@@ -22,6 +22,9 @@ spec:
         organization: xebialabs
     spec:
       serviceAccountName: prometheus
+      {{- if eq .K8sSetup "Openshift" }}
+      serviceAccount: prometheus
+      {{- end }}
       initContainers:
         - name: "init-chown-data"
           {{if .UseCustomRegistryForAllImages }}
@@ -87,6 +90,8 @@ spec:
         {{else if eq .K8sSetup "GoogleGKE"}}
         storageClassName: xebialabs-standard-retain
         {{else if eq .K8sSetup "PlainK8SCluster" }}
+        storageClassName: xebialabs-managed-nfs-storage
+        {{else if eq .K8sSetup "Openshift" }}
         storageClassName: xebialabs-managed-nfs-storage
         {{else if eq .K8sSetup "AzureAKS" }}
         storageClassName: xebialabs-default-retain

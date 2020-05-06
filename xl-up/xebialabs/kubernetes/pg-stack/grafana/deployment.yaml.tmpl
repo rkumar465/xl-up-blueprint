@@ -1,3 +1,13 @@
+{{- if eq .K8sSetup "Openshift" }}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: grafana
+  namespace: {{ .Namespace }}
+  labels:
+    organization: xebialabs
+---
+{{- end}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -17,6 +27,9 @@ spec:
         app: grafana
         organization: xebialabs
     spec:
+      {{- if eq .K8sSetup "Openshift" }}
+      serviceAccount: grafana
+      {{- end }}
       initContainers:
         - name: fix-the-volume-permission
           {{if .UseCustomRegistryForAllImages }}

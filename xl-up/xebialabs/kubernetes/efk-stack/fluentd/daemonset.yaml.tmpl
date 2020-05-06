@@ -28,6 +28,9 @@ spec:
         scheduler.alpha.kubernetes.io/critical-pod: ''
         seccomp.security.alpha.kubernetes.io/pod: 'docker/default'
     spec:
+      {{- if eq .K8sSetup "Openshift" }}
+      serviceAccount: fluentd-es
+      {{- end }}
       serviceAccountName: fluentd-es
       containers:
       - name: fluentd-es

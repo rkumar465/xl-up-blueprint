@@ -22,6 +22,9 @@ supplementalGroups:
   type: RunAsAny
 users:
 - system:serviceaccount:{{ .Namespace }}:{{ .OpenshiftServiceAccount }}
+- system:serviceaccount:{{ .Namespace }}:elasticsearch-logging
+#- system:serviceaccount:{{ .Namespace }}:prometheus
+#- system:serviceaccount:{{ .Namespace }}:fluentd-es
 volumes:
 - '*'
 {{- if not .UseExternalIngress }}
@@ -46,6 +49,7 @@ supplementalGroups:
   type: RunAsAny
 users:
 - system:serviceaccount:{{ .Namespace }}:haproxy-ingress-serviceaccount
+- system:serviceaccount:{{ .Namespace }}:grafana
 volumes:
 - configMap
 - downwardAPI
