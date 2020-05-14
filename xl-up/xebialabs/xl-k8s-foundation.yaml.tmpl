@@ -506,6 +506,9 @@ spec:
                   readinessProbeRetry: 120
                   file: !file "kubernetes/efk-stack/es-curator/configmap.yaml"
                 applicationDependencies:
+                   {{- if eq .K8sSetup "Openshift" }}
+                  Openshift-SCC: "1.0"
+                   {{- end }}
                    {{- if and (ne .K8sSetup "PlainK8SCluster") (ne .K8sSetup "Openshift") (not .UseExistingStorageClasses)}}
                   K8s-StorageClass: "1.0"
                     {{- end }}

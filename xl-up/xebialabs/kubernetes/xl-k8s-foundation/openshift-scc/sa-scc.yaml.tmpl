@@ -5,29 +5,38 @@ metadata:
   name: {{ .OpenshiftServiceAccount }}
   namespace: {{ .Namespace }}
 ---
+allowHostDirVolumePlugin: true
 allowPrivilegeEscalation: true
 allowPrivilegedContainer: true
+allowedCapabilities:
+- '*'
 apiVersion: security.openshift.io/v1
 fsGroup:
   type: RunAsAny
-groups: []
+groups:
+- system:cluster-admins
+- system:nodes
+- system:masters
 kind: SecurityContextConstraints
 metadata:
   name: xebialabs-privileged
 runAsUser:
   type: RunAsAny
 seLinuxContext:
-  type: MustRunAs
+  type: RunAsAny
+seccompProfiles:
+- '*'
 supplementalGroups:
   type: RunAsAny
 users:
 - system:serviceaccount:{{ .Namespace }}:{{ .OpenshiftServiceAccount }}
+{{- if .MonitoringInstall }}
 - system:serviceaccount:{{ .Namespace }}:elasticsearch-logging
-#- system:serviceaccount:{{ .Namespace }}:prometheus
-#- system:serviceaccount:{{ .Namespace }}:fluentd-es
+- system:serviceaccount:{{ .Namespace }}:fluentd-es
+{{- end }}
 volumes:
 - '*'
-{{- if not .UseExternalIngress }}
+{{- if or (not .UseExternalIngress) (.MonitoringInstall) }}
 ---
 allowPrivilegeEscalation: true
 apiVersion: security.openshift.io/v1
@@ -48,8 +57,13 @@ seLinuxContext:
 supplementalGroups:
   type: RunAsAny
 users:
+{{- if not .UseExternalIngress }}
 - system:serviceaccount:{{ .Namespace }}:haproxy-ingress-serviceaccount
+{{- end }}
+{{- if .MonitoringInstall }}
 - system:serviceaccount:{{ .Namespace }}:grafana
+- system:serviceaccount:{{ .Namespace }}:prometheus
+{{- end }}
 volumes:
 - configMap
 - downwardAPI
@@ -58,7 +72,7 @@ volumes:
 - projected
 - secret
 {{- end }}
-{{- if and (eq .K8sSetup "Openshift") (not .UseExistingStorageClasses)}}
+{{- if (not .UseExistingStorageClasses) }}
 ---
 allowHostDirVolumePlugin: true
 allowPrivilegeEscalation: true
