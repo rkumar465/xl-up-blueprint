@@ -180,9 +180,6 @@ spec:
                     type: k8s.ResourcesFile
                     file: !file "answers.yaml"
                 applicationDependencies:
-                {{- if eq .K8sSetup "Openshift" }}
-                  Openshift-SCC: "1.0"
-                {{- end}}
                 {{- if .UseCustomRegistry}}
                   K8s-Docker-Credentials: "v0.6"
                 {{end}}
@@ -227,9 +224,6 @@ spec:
                     readinessProbeRetry: 120
                     file: !file kubernetes/xl-k8s-foundation/dockercred.yaml
                 applicationDependencies:
-                {{- if eq .K8sSetup "Openshift"}}
-                  Openshift-SCC: "1.0"
-                {{- end}}
                 {{- if not .ExternalDatabase}}
                   PostgreSQL: "10.5"
                 {{- end }}
@@ -359,6 +353,9 @@ spec:
                   {{- end }}
                 applicationDependencies:
                   {{- if eq .K8sSetup "Openshift"}}
+                  # All other dependencies of Answers-Configmap can be opted out during deployment except XL-PVC-Claims, 
+                  # So adding SCC dependency here to make sure the deployment of SCC executes before the depoyment of XLD.
+                  # XL-PVC-Claims have not the actual dependency on openshift-scc.
                   Openshift-SCC: "1.0"
                   {{- end}}
                   {{- if or (eq .K8sSetup "GoogleGKE") (eq .K8sSetup "PlainK8SCluster") (eq .K8sSetup "Openshift")}}
@@ -462,9 +459,6 @@ spec:
                     file: !file kubernetes/xl-k8s-foundation/rabbitmq/ingress.yaml
                   {{end}}
                 applicationDependencies:
-                  {{- if eq .K8sSetup "Openshift"}}
-                  Openshift-SCC: "1.0"
-                  {{- end}}
                   {{- if and (ne .K8sSetup "DockerDesktopK8s") (ne .K8sSetup "MinikubeK8s") }}
                     {{- if and (ne .K8sSetup "PlainK8SCluster") (ne .K8sSetup "Openshift") (not .UseExistingStorageClasses)}}
                   K8s-StorageClass: "1.0"
